@@ -30,7 +30,7 @@ onBeforeMount(() => {
               :key="item.id"
               :timestamp="item.createTime.replace('T', ' ')"
               size="large"
-              hollow="true"
+              :hollow="true"
               color="#0bbd87"
             >
               <el-popover

@@ -12,6 +12,7 @@ const updateUser = () => {
 }
 
 const goToPerson = () => {}
+const goToPassword = () => {}
 const logout = () => {}
 </script>
 <template>
@@ -36,7 +37,7 @@ const logout = () => {}
         <div class="layout-header-right-notice">
           <el-icon :size="27" color="#DDD"><BellFilled /></el-icon>
         </div>
-        <el-dropdown placement="bottom">
+        <el-dropdown>
           <div class="avatar">
             <img
               :src="
@@ -46,19 +47,16 @@ const logout = () => {}
             />
             <div>{{ user.username || '管理员' }}</div>
           </div>
-          <el-dropdown>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item @click="goToPerson"
-                  >个人信息</el-dropdown-item
-                >
-                <el-dropdown-item @click="goToPassword"
-                  >修改密码</el-dropdown-item
-                >
-                <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="goToPerson">个人信息</el-dropdown-item>
+              <el-dropdown-item @click="goToPassword"
+                >修改密码</el-dropdown-item
+              >
+              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </div>
     </div>
@@ -128,4 +126,7 @@ const logout = () => {}
 
 <style scoped>
 @import '@/assets/css/layout.css';
+.layout-header-center ::v-deep .el-breadcrumb__item .el-breadcrumb__inner {
+  color: #ccc !important;
+}
 </style>
