@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import router from '@/router'
 import request from '@/utils/request'
 import { useUserStore } from '@/stores'
@@ -29,20 +29,34 @@ const rules = {
   ]
 }
 
+const parentId = inject('parentId', 'Unknown')
+
 // 登录
 const login = () => {
   // 提交之前预校验
   formRef.value.validate((valid) => {
     if (valid) {
-      request.post('/login', form.value).then((res) => {
-        console.log(res)
-        if (res.data.code === 1) {
-          ElMessage.success('登录成功')
-          userStore.setToken(res.data.data)
-          userStore.setUsername(form.value.username)
-          router.push('/')
-        }
-      })
+      request
+        .post(parentId === 'user' ? '/login' : '/admin/login', form.value)
+        .then((res) => {
+          console.log('res:' + res.data)
+          if (res.data.code === 1) {
+            ElMessage.success('登录成功')
+            userStore.setUser(
+              res.data.data.id,
+              res.data.data.username,
+              res.data.data.name,
+              res.data.data.avatar,
+              res.data.data.role,
+              res.data.data.phone,
+              res.data.data.email,
+              res.data.data.token
+            )
+            // 登录成功后跳转到首页
+            router.push('/')
+            router.push('/')
+          }
+        })
     }
   })
 }

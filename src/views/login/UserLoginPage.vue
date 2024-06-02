@@ -1,5 +1,8 @@
 <script setup>
+import { provide } from 'vue'
 import LoginPage from './LoginPage.vue'
+
+provide('parentId', 'user')
 </script>
 <template>
   <LoginPage

@@ -1,4 +1,9 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const user = JSON.parse(localStorage.getItem('big-user') || '{}')
 // const user = ref({
 //   name: '管理员',
@@ -11,9 +16,20 @@ const updateUser = () => {
     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
 }
 
-const goToPerson = () => {}
-const goToPassword = () => {}
-const logout = () => {}
+const goToPerson = () => {
+  if (user.role === 'ADMIN') {
+    router.push('/adminPerson')
+  } else {
+    router.push('/userPerson')
+  }
+}
+const goToPassword = () => {
+  router.push('/password')
+}
+const logout = () => {
+  localStorage.removeItem('big-user')
+  router.push('/login')
+}
 </script>
 <template>
   <div class="layout-container">

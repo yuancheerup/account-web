@@ -1,24 +1,174 @@
-<!-- <script setup>
-import { ref } from 'vue'
+<script setup>
+import { ref, onBeforeMount } from 'vue'
+import request from '@/utils/request'
+import { baseURL } from '@/utils/request'
 
-const username = ref('')
+const user = JSON.parse(localStorage.getItem('big-user'))
+
+const username = ref(null)
 
 const reset = () => {
-  username.value = ''
+  username.value = null
   load(1)
 }
 
 const formVisible = ref(false)
-const form = ref({})
+const formRef = ref(null)
+const form = ref({
+  username: '',
+  password: '',
+  name: '',
+  phone: '',
+  email: '',
+  // sex: '',
+  role: '',
+  // birthday: '',
+  avatar: ''
+})
 
+// 校验规则
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    {
+      pattern: /^\S{6,15}$/,
+      message: '长度在 6 到 20 的非空字符',
+      trigger: 'blur'
+    }
+  ]
+}
+
+// 新增
 const handleAdd = () => {
-  // 新增
   formVisible.value = true
   form.value = {}
 }
 
+const tableData = ref([])
+
+// 获取用户数据
+onBeforeMount(() => {
+  load(1)
+})
+
+// 获取选中行的id值
+const ids = ref([])
+const handleSelectionChange = (val) => {
+  ids.value = val.map((item) => item.id)
+}
+
+// 编辑内容
+const handleEdit = (row) => {
+  formVisible.value = true
+  form.value = JSON.parse(JSON.stringify(row))
+}
+
+// 删除
+const del = (id) => {
+  ElMessageBox.confirm('确定删除吗？', '确认删除', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    console.log('删除的id为：' + id)
+    request.delete('/admin/delete/' + id).then((res) => {
+      console.log('删除成功：' + res.data.code)
+      if (res.data.code === 1) {
+        ElMessage.success('删除成功')
+        load(1)
+      } else {
+        ElMessage.error('删除失败')
+      }
+    })
+  })
+}
+
+// 批量删除
 const delBatch = () => {
-  // 批量删除
+  if (!ids.value.length) {
+    ElMessage.warning('请选择数据')
+    return
+  }
+  ElMessageBox.confirm('确定删除吗？', '确认删除', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    console.log(ids.value)
+    request.delete('/admin/delete/batch', { data: ids.value }).then((res) => {
+      console.log('删除成功：' + res.data.code)
+      if (res.data.code === 1) {
+        ElMessage.success('删除成功')
+        load(1)
+      } else {
+        ElMessage.error('删除失败')
+      }
+    })
+  })
+}
+
+// 分页
+const pageSize = ref(5)
+const pageNum = ref(1)
+const total = ref(0)
+const load = (page) => {
+  pageNum.value = page
+  request
+    .get('/admin/selectPage', {
+      params: {
+        pageNum: page,
+        pageSize: pageSize.value,
+        username: username.value
+      }
+    })
+    .then((res) => {
+      tableData.value = res.data.data.list
+      total.value = res.data.data.total
+      console.log(res)
+    })
+}
+
+// 处理分页
+const handleCurrentChange = (pageNum) => {
+  console.log('pageNum-' + pageNum)
+  load(pageNum)
+}
+
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
+}
+
+// 保存
+const save = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      const url = form.value.id ? '/admin/update' : '/admin/add'
+      const method = form.value.id ? 'PUT' : 'POST'
+      request({
+        url,
+        method,
+        data: form.value
+      }).then((res) => {
+        if (res.data.code === 1) {
+          ElMessage.success('保存成功')
+          load(1)
+          formVisible.value = false
+        } else {
+          ElMessage.error(res.data.msg)
+        }
+      })
+    }
+  })
+}
+
+const handleAvatarSuccess = (response, file, fileList) => {
+  // 把头像属性换成上传的图片的链接
+  form.value.avatar = response.data
 }
 </script>
 <template>
@@ -53,19 +203,17 @@ const delBatch = () => {
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="id"
-          label="序号"
-          width="80"
-          align="center"
-          sortable
-        ></el-table-column>
+        <el-table-column label="序号" width="80" align="center">
+          <template #default="scope">
+            {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="账号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="sex" label="性别"></el-table-column>
-        <el-table-column prop="birth" label="生日"></el-table-column>
+        <!-- <el-table-column prop="sex" label="性别"></el-table-column>
+        <el-table-column prop="birthday" label="生日"></el-table-column> -->
         <el-table-column label="头像">
           <template #default="scope">
             <div style="display: flex; align-items: center">
@@ -81,18 +229,10 @@ const delBatch = () => {
         <el-table-column prop="role" label="角色"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template #default="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              plain
-              @click="handleEdit(scope.row)"
+            <el-button type="primary" plain @click="handleEdit(scope.row)"
               >编辑</el-button
             >
-            <el-button
-              size="mini"
-              type="danger"
-              plain
-              @click="del(scope.row.id)"
+            <el-button type="danger" plain @click="del(scope.row.id)"
               >删除</el-button
             >
           </template>
@@ -103,10 +243,11 @@ const delBatch = () => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         >
         </el-pagination>
@@ -114,8 +255,8 @@ const delBatch = () => {
     </div>
 
     <el-dialog
-      title="用户"
-      v-model:visible="formVisible"
+      title="管理员"
+      v-model="formVisible"
       width="40%"
       :close-on-click-modal="false"
       destroy-on-close
@@ -128,11 +269,10 @@ const delBatch = () => {
         ref="formRef"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input
-            v-model="form.username"
-            placeholder="用户名"
-            disabled
-          ></el-input>
+          <el-input v-model="form.username" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="form.password" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="form.name" placeholder="姓名"></el-input>
@@ -143,24 +283,25 @@ const delBatch = () => {
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="sex">
+        <!-- <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="form.sex">
             <el-radio label="男"></el-radio>
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="生日" prop="birth">
+        <el-form-item label="生日" prop="birthady">
           <el-date-picker
             style="width: 100%"
-            value-format="yyyy-MM-dd"
-            format="yyyy-MM-dd"
-            v-model="form.birth"
+            placeholder="选择日期"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            v-model="form.birthday"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="头像">
           <el-upload
             class="avatar-uploader"
-            :action="$baseUrl + '/files/upload'"
+            :action="baseURL + '/files/upload'"
             :headers="{ token: user.token }"
             list-type="picture"
             :on-success="handleAvatarSuccess"
@@ -192,8 +333,9 @@ const delBatch = () => {
 }
 
 .table {
-  font-size: 14px;
+  font-size: 10px;
+  .pagination {
+    margin-top: 10px;
+  }
 }
-</style> -->
-
-<template>AdminPage</template>
+</style>

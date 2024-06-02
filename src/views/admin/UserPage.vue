@@ -1,17 +1,19 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import request from '@/utils/request'
-import { ElMessage } from 'element-plus'
+import { baseURL } from '@/utils/request'
 
 const user = JSON.parse(localStorage.getItem('big-user'))
 
 const username = ref(null)
 
 const reset = () => {
-  username.value = ''
+  username.value = null
+  load(1)
 }
 
 const formVisible = ref(false)
+const formRef = ref(null)
 const form = ref({
   username: '',
   password: '',
@@ -20,17 +22,30 @@ const form = ref({
   email: '',
   sex: '',
   role: '',
-  birthday: ''
+  birthday: '',
+  avatar: ''
 })
 
-const handleAdd = () => {
-  // 新增
-  formVisible.value = true
-  form.value = {}
+// 校验规则
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    {
+      pattern: /^\S{6,15}$/,
+      message: '长度在 6 到 20 的非空字符',
+      trigger: 'blur'
+    }
+  ]
 }
 
-const delBatch = () => {
-  // 批量删除
+// 新增
+const handleAdd = () => {
+  formVisible.value = true
+  form.value = {}
 }
 
 const tableData = ref([])
@@ -59,8 +74,34 @@ const del = (id) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    request.delete('/user/deleteById/' + id).then((res) => {
-      if (res.data.code === '1') {
+    console.log('删除的id为：' + id)
+    request.delete('/user/delete/' + id).then((res) => {
+      console.log('删除成功：' + res.data.code)
+      if (res.data.code === 1) {
+        ElMessage.success('删除成功')
+        load(1)
+      } else {
+        ElMessage.error('删除失败')
+      }
+    })
+  })
+}
+
+// 批量删除
+const delBatch = () => {
+  if (!ids.value.length) {
+    ElMessage.warning('请选择数据')
+    return
+  }
+  ElMessageBox.confirm('确定删除吗？', '确认删除', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    console.log(ids.value)
+    request.delete('/user/delete/batch', { data: ids.value }).then((res) => {
+      console.log('删除成功：' + res.data.code)
+      if (res.data.code === 1) {
         ElMessage.success('删除成功')
         load(1)
       } else {
@@ -74,11 +115,12 @@ const del = (id) => {
 const pageSize = ref(5)
 const pageNum = ref(1)
 const total = ref(0)
-const load = (pageNum) => {
+const load = (page) => {
+  pageNum.value = page
   request
     .get('/user/selectPage', {
       params: {
-        pageNum: pageNum.value,
+        pageNum: page,
         pageSize: pageSize.value,
         username: username.value
       }
@@ -92,7 +134,41 @@ const load = (pageNum) => {
 
 // 处理分页
 const handleCurrentChange = (pageNum) => {
+  console.log('pageNum-' + pageNum)
   load(pageNum)
+}
+
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
+}
+
+// 保存
+const save = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      const url = form.value.id ? '/user/update' : '/user/add'
+      const method = form.value.id ? 'PUT' : 'POST'
+      request({
+        url,
+        method,
+        data: form.value
+      }).then((res) => {
+        if (res.data.code === 1) {
+          ElMessage.success('保存成功')
+          load(1)
+          formVisible.value = false
+        } else {
+          ElMessage.error(res.data.msg)
+        }
+      })
+    }
+  })
+}
+
+const handleAvatarSuccess = (response, file, fileList) => {
+  // 把头像属性换成上传的图片的链接
+  form.value.avatar = response.data
 }
 </script>
 <template>
@@ -127,21 +203,19 @@ const handleCurrentChange = (pageNum) => {
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column
-          type="index"
-          label="序号"
-          width="80"
-          align="center"
-          sortable
-        ></el-table-column>
+        <el-table-column label="序号" width="80" align="center">
+          <template #default="scope">
+            {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="账号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="sex" label="性别"></el-table-column>
-        <el-table-column prop="birth" label="生日"></el-table-column>
+        <el-table-column prop="birthday" label="生日"></el-table-column>
         <el-table-column label="头像">
-          <template #scope>
+          <template #default="scope">
             <div style="display: flex; align-items: center">
               <el-image
                 style="width: 40px; height: 40px; border-radius: 50%"
@@ -169,10 +243,11 @@ const handleCurrentChange = (pageNum) => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         >
         </el-pagination>
@@ -214,18 +289,19 @@ const handleCurrentChange = (pageNum) => {
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="生日" prop="birth">
+        <el-form-item label="生日" prop="birthady">
           <el-date-picker
             style="width: 100%"
-            value-format="yyyy-MM-dd"
-            format="yyyy-MM-dd"
-            v-model="form.birth"
+            placeholder="选择日期"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            v-model="form.birthday"
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="头像">
           <el-upload
             class="avatar-uploader"
-            :action="$baseUrl + '/files/upload'"
+            :action="baseURL + '/files/upload'"
             :headers="{ token: user.token }"
             list-type="picture"
             :on-success="handleAvatarSuccess"
@@ -257,6 +333,9 @@ const handleCurrentChange = (pageNum) => {
 }
 
 .table {
-  font-size: 14px;
+  font-size: 10px;
+  .pagination {
+    margin-top: 10px;
+  }
 }
 </style>

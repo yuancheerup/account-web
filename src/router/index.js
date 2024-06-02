@@ -83,12 +83,26 @@ const router = createRouter({
         {
           path: '/adminPerson',
           name: 'adminPerson',
-          component: () => import('../views/admin/AdminPersonPage.vue')
+          component: () => import('../views/admin/AdminPersonPage.vue'),
+          meta: {
+            name: '个人信息'
+          }
+        },
+        {
+          path: '/userPerson',
+          name: 'userPerson',
+          components: () => import('../views/user/UserPersonPage.vue'),
+          meta: {
+            name: '个人信息'
+          }
         },
         {
           path: '/password',
           name: 'password',
-          component: () => import('../views/admin/PasswordPage.vue')
+          component: () => import('../views/admin/PasswordPage.vue'),
+          meta: {
+            name: '修改密码'
+          }
         }
       ]
     },
