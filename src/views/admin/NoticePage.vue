@@ -10,7 +10,6 @@ const total = ref(0)
 const title = ref(null)
 const formVisible = ref(false)
 const form = reactive({})
-
 const ids = ref([])
 
 const rules = {

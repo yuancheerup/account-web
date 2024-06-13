@@ -26,7 +26,7 @@ const update = () => {
   })
 }
 
-const handleAvatarSuccess = (response, file, fileList) => {
+const handleAvatarSuccess = (response) => {
   // 把user的头像属性换成上传的图片的链接
   user.avatar = response.data
 }

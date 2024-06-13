@@ -166,7 +166,7 @@ const save = () => {
   })
 }
 
-const handleAvatarSuccess = (response, file, fileList) => {
+const handleAvatarSuccess = (response) => {
   // 把头像属性换成上传的图片的链接
   form.value.avatar = response.data
 }
