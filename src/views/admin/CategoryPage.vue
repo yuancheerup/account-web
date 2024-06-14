@@ -10,7 +10,6 @@ const total = ref(0)
 const name = ref(null)
 const formVisible = ref(false)
 const form = reactive({})
-const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 const ids = ref([])
 
 const rules = {
