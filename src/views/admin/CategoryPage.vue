@@ -165,12 +165,11 @@ onMounted(() => {
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="id"
-          label="序号"
-          width="75"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="id" label="序号" width="75" align="center">
+          <template #default="scope">
+            {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
         <el-table-column prop="type" label="类型"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
