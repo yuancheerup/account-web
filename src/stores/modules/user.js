@@ -60,6 +60,13 @@ export const useUserStore = defineStore(
 
     const removeToken = () => {
       token.value = ''
+      id.value = ''
+      username.value = ''
+      name.value = ''
+      role.value = ''
+      avatar.value = ''
+      phone.value = ''
+      email.value = ''
     }
 
     return {

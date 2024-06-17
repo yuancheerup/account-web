@@ -18,6 +18,7 @@ instance.interceptors.request.use(
     if (userToken) {
       config.headers.Authorization = userToken.token
     }
+    // console.log('Request config:', config) // 调试信息
     return config
   },
   (error) => Promise.reject(error)
@@ -38,11 +39,13 @@ instance.interceptors.response.use(
     // TODO 5. 处理401错误
     // 错误的特殊情况 401权限不足 或 token 过期
     if (error.response?.status === 401) {
+      // 移除无效token
+      localStorage.removeItem('big-user')
       router.push('/login')
     }
 
     // 错误的默认情况
-    // ElMessage.error(error.request.data.message || '服务异常')
+    ElMessage.error(error.request.data.message || '服务异常')
     return Promise.reject(error)
   }
 )

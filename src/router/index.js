@@ -13,7 +13,8 @@ const router = createRouter({
           name: 'home',
           component: () => import('../views/HomePage.vue'),
           meta: {
-            name: '首页'
+            name: '首页',
+            requiresAuth: true
           }
         },
         {
@@ -21,7 +22,8 @@ const router = createRouter({
           name: 'bill',
           component: () => import('../views/user/BillPage.vue'),
           meta: {
-            name: '我的账单'
+            name: '我的账单',
+            requiresAuth: true
           }
         },
         {
@@ -29,7 +31,8 @@ const router = createRouter({
           name: 'plan',
           component: () => import('../views/user/PlanPage.vue'),
           meta: {
-            name: '存钱计划'
+            name: '存钱计划',
+            requiresAuth: true
           }
         },
         {
@@ -37,7 +40,8 @@ const router = createRouter({
           name: 'diary',
           component: () => import('../views/user/DiaryPage.vue'),
           meta: {
-            name: '记账日记'
+            name: '记账日记',
+            requiresAuth: true
           }
         },
         {
@@ -45,7 +49,8 @@ const router = createRouter({
           name: 'account',
           component: () => import('../views/admin/AccountPage.vue'),
           meta: {
-            name: '账户信息'
+            name: '账户信息',
+            requiresAuth: true
           }
         },
         {
@@ -53,7 +58,8 @@ const router = createRouter({
           name: 'category',
           component: () => import('../views/admin/CategoryPage.vue'),
           meta: {
-            name: '账单分类'
+            name: '账单分类',
+            requiresAuth: true
           }
         },
         {
@@ -61,7 +67,8 @@ const router = createRouter({
           name: 'notice',
           component: () => import('../views/admin/NoticePage.vue'),
           meta: {
-            name: '公告信息'
+            name: '公告信息',
+            requiresAuth: true
           }
         },
         {
@@ -69,7 +76,8 @@ const router = createRouter({
           name: 'user',
           component: () => import('../views/admin/UserPage.vue'),
           meta: {
-            name: '用户信息'
+            name: '用户信息',
+            requiresAuth: true
           }
         },
         {
@@ -77,7 +85,8 @@ const router = createRouter({
           name: 'admin',
           component: () => import('../views/admin/AdminPage.vue'),
           meta: {
-            name: '管理员信息'
+            name: '管理员信息',
+            requiresAuth: true
           }
         },
         {
@@ -85,7 +94,8 @@ const router = createRouter({
           name: 'adminPerson',
           component: () => import('../views/admin/AdminPersonPage.vue'),
           meta: {
-            name: '个人信息'
+            name: '个人信息',
+            requiresAuth: true
           }
         },
         {
@@ -93,7 +103,8 @@ const router = createRouter({
           name: 'userPerson',
           components: () => import('../views/user/UserPersonPage.vue'),
           meta: {
-            name: '个人信息'
+            name: '个人信息',
+            requiresAuth: true
           }
         },
         {
@@ -101,7 +112,8 @@ const router = createRouter({
           name: 'password',
           component: () => import('../views/admin/PasswordPage.vue'),
           meta: {
-            name: '修改密码'
+            name: '修改密码',
+            requiresAuth: true
           }
         }
       ]
@@ -121,6 +133,17 @@ const router = createRouter({
       component: () => import('../views/login/AdminLoginPage.vue')
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const user = JSON.parse(localStorage.getItem('big-user') || '{}')
+
+  if (requiresAuth && (!user || !user.token)) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router
