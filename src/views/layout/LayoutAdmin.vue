@@ -88,15 +88,13 @@ const logout = () => {
           router
           default-active="$route.path"
           text-color="#fff"
-          @open="handleOpen"
-          @close="handleClose"
         >
           <el-menu-item index="/home">
             <el-icon><HomeFilled /></el-icon>
             <span>系统首页</span>
           </el-menu-item>
 
-          <el-menu-item index="/statistic">
+          <!-- <el-menu-item index="/statistic">
             <el-icon><PieChart /></el-icon>
             <span>账单统计</span>
           </el-menu-item>
@@ -114,7 +112,7 @@ const logout = () => {
           <el-menu-item index="/diary">
             <el-icon><Notebook /></el-icon>
             <span>记账日记</span>
-          </el-menu-item>
+          </el-menu-item> -->
 
           <el-sub-menu index="info">
             <template #title>
