@@ -356,7 +356,7 @@ onMounted(() => {
               <img
                 :src="item.cover"
                 alt=""
-                style="width: 120px; height: 60px"
+                style="max-width: 120px; max-height: 80px"
               />
             </div>
           </div>
@@ -460,7 +460,7 @@ onMounted(() => {
 .table {
   background-color: #fff;
   margin-bottom: 7px;
-  padding: 10px;
+  padding: 18px;
   border-radius: 5px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
@@ -479,7 +479,7 @@ onMounted(() => {
 
     background-color: #fff;
     margin-bottom: 7px;
-    padding: 25px 30px;
+    padding: 20px 25px;
     border-radius: 5px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 

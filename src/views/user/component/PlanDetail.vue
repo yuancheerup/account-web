@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import request from '@/utils/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import moment from 'moment'
 
 const plan = ref({})
 const tableData = ref([])
@@ -64,7 +63,7 @@ const savePlanDetail = () => {
 const del = (id) => {
   ElMessageBox.confirm('您确定删除吗？', '确认删除', { type: 'warning' })
     .then(() => {
-      request.delete('/planDetail/delete/' + id).then((res) => {
+      request.delete(`/planDetail/delete/${id}/${planId.value}`).then((res) => {
         if (res.data.code === 1) {
           ElMessage.success('操作成功')
           load()
