@@ -121,28 +121,6 @@ const handleSelectionChange = (rows) => {
   ids.value = rows.map((v) => v.id)
 }
 
-// 批量删除
-const delBatch = () => {
-  if (!ids.value.length) {
-    ElMessage.warning('请选择数据')
-    return
-  }
-  ElMessageBox.confirm('您确定批量删除这些数据吗？', '确认删除', {
-    type: 'warning'
-  })
-    .then(() => {
-      request.delete('/diary/delete/batch', { data: ids.value }).then((res) => {
-        if (res.data.code === 1) {
-          ElMessage.success('操作成功')
-          load(1)
-        } else {
-          ElMessage.error(res.data.msg)
-        }
-      })
-    })
-    .catch(() => {})
-}
-
 // 分页
 const load = (pageNumParam) => {
   if (pageNumParam) pageNum.value = pageNumParam
@@ -212,7 +190,6 @@ onMounted(() => {
 
     <div class="operation">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
-      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
 
     <div class="table" v-if="user.role === 'ADMIN' && tableData.length">
