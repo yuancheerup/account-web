@@ -79,7 +79,7 @@ const update = () => {
 </script>
 
 <template>
-  <div>
+  <div class="box">
     <el-card style="width: 50%">
       <el-form
         ref="formRef"
@@ -109,10 +109,11 @@ const update = () => {
             placeholder="确认密码"
           ></el-input>
         </el-form-item>
-        <div style="text-align: center; margin-bottom: 20px">
-          <el-button type="primary" @click="update">确认修改</el-button>
-        </div>
       </el-form>
+      <!-- 修改按钮 -->
+      <div style="text-align: center; margin-bottom: 20px">
+        <el-button type="primary" @click="update">确认修改</el-button>
+      </div>
     </el-card>
   </div>
 </template>

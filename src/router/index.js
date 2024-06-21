@@ -233,6 +233,15 @@ const userRoutes = [
         }
       },
       {
+        path: 'accountBook',
+        name: 'accountBook',
+        component: () => import('../views/user/AccountBook.vue'),
+        meta: {
+          name: '我的账本',
+          requiresAuth: true
+        }
+      },
+      {
         path: 'plan',
         name: 'plan',
         component: () => import('../views/user/PlanPage.vue'),

@@ -153,6 +153,7 @@ const load = (pageNumValue) => {
         pageSize: pageSize.value,
         type: type.value,
         category: category.value,
+        userId: user.id,
         start: start.value,
         end: end.value
       }
@@ -290,7 +291,6 @@ onMounted(() => {
             style="width: 100%"
             v-model="form.type"
             @change="getCategoryList"
-            :disabled="form.id ? true : false"
           >
             <el-option value="支出"></el-option>
             <el-option value="收入"></el-option>
@@ -318,12 +318,7 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="金额" prop="money">
-          <el-input
-            v-model="form.money"
-            placeholder="金额"
-            :disabled="form.id ? true : false"
-            :min="1"
-          ></el-input>
+          <el-input v-model="form.money" placeholder="金额" :min="1"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input
@@ -356,7 +351,7 @@ onMounted(() => {
 .table {
   background-color: #fff;
   margin-bottom: 7px;
-  padding: 10px;
+  padding: 18px;
   border-radius: 5px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }

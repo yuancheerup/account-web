@@ -12,6 +12,8 @@ export const useUserStore = defineStore(
     const avatar = ref('')
     const phone = ref('')
     const email = ref('')
+    const sex = ref('')
+    const birthday = ref('')
 
     const setUser = (
       newId,
@@ -21,6 +23,8 @@ export const useUserStore = defineStore(
       newRole,
       newPhone,
       newEmail,
+      newSex,
+      newBirthday,
       newToken
     ) => {
       token.value = newToken
@@ -31,6 +35,8 @@ export const useUserStore = defineStore(
       avatar.value = newAvatar
       phone.value = newPhone
       email.value = newEmail
+      sex.value = newSex
+      birthday.value = newBirthday
     }
 
     const setToken = (newToken) => {
@@ -57,6 +63,12 @@ export const useUserStore = defineStore(
     const setEmail = (newVal) => {
       email.value = newVal
     }
+    const setSex = (newVal) => {
+      sex.value = newVal
+    }
+    const setBirthday = (newVal) => {
+      birthday.value = newVal
+    }
 
     const removeToken = () => {
       token.value = ''
@@ -67,6 +79,8 @@ export const useUserStore = defineStore(
       avatar.value = ''
       phone.value = ''
       email.value = ''
+      sex.value = ''
+      birthday.value = ''
     }
 
     return {
@@ -78,6 +92,8 @@ export const useUserStore = defineStore(
       avatar,
       phone,
       email,
+      sex,
+      birthday,
       setUser,
       setToken,
       setId,
@@ -87,6 +103,8 @@ export const useUserStore = defineStore(
       setAvatar,
       setPhone,
       setEmail,
+      setSex,
+      setBirthday,
       removeToken
     }
   },

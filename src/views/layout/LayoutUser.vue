@@ -68,9 +68,9 @@ const logout = () => {
               <span>我的账单</span>
             </el-menu-item>
 
-            <el-menu-item index="/bill">
-              <el-icon><Document /></el-icon>
-              <span>我的账单</span>
+            <el-menu-item index="/accountBook">
+              <el-icon><Notebook /></el-icon>
+              <span>我的账本</span>
             </el-menu-item>
 
             <el-menu-item index="/plan">
@@ -79,7 +79,7 @@ const logout = () => {
             </el-menu-item>
 
             <el-menu-item index="/diary">
-              <el-icon><Notebook /></el-icon>
+              <el-icon><Tickets /></el-icon>
               <span>记账日记</span>
             </el-menu-item>
           </el-menu>

@@ -44,12 +44,14 @@ const login = () => {
             ElMessage.success('登录成功')
             userStore.setUser(
               res.data.data.id,
-              res.data.data.username,
-              res.data.data.name,
-              res.data.data.avatar,
-              res.data.data.role,
-              res.data.data.phone,
-              res.data.data.email,
+              res.data.data.username || '',
+              res.data.data.name || '',
+              res.data.data.avatar || '',
+              res.data.data.role || '',
+              res.data.data.phone || '',
+              res.data.data.email || '',
+              res.data.data.sex || '',
+              res.data.data.birthday || '',
               res.data.data.token
             )
             // 登录成功后跳转到首页
@@ -102,18 +104,19 @@ const login = () => {
 .container {
   height: 100vh;
   overflow: hidden;
-  background-image: url('@/assets/img/bg.jpg');
+  background-image: url('@/assets/img/bg-login-user.png');
   background-size: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #666;
+  background-color: #b8e5f8;
 }
 
 .login-box {
   width: 300px;
   padding: 30px;
-  background-color: rgb(251, 251, 251, 0.9);
+  background-color: #fff;
   border-radius: 5px;
   .title {
     text-align: center;
@@ -123,8 +126,8 @@ const login = () => {
   }
   .el-button {
     width: 100%;
-    background-color: #333;
-    border-color: #333;
+    background-color: #409eff;
+    border-color: #409eff;
     color: white;
   }
 }
