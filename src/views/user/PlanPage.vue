@@ -193,9 +193,9 @@ const handleCurrentChange = (page) => {
                 </div>
                 <div style="display: flex; align-items: center">
                   <div style="color: #666">
-                    <span style="margin-right: 40px">
+                    <!-- <span style="margin-right: 40px">
                       <el-icon><User /></el-icon> {{ item.username }}
-                    </span>
+                    </span> -->
                     <!-- <span style="margin-left: 10px"
                       ><el-icon><Calendar /></el-icon>
                       {{ item.createTime }}</span
@@ -300,7 +300,7 @@ const handleCurrentChange = (page) => {
 
     <el-dialog
       title="存钱"
-      v-model:visible="detailFromVisible"
+      v-model="detailFromVisible"
       width="30%"
       :close-on-click-modal="false"
       destroy-on-close

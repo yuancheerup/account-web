@@ -192,95 +192,7 @@ onMounted(() => {
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
     </div>
 
-    <div class="table" v-if="user.role === 'ADMIN' && tableData.length">
-      <el-table
-        :data="tableData"
-        stripe
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column
-          type="selection"
-          width="55"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="id"
-          label="序号"
-          width="80"
-          align="center"
-          sortable
-        ></el-table-column>
-        <el-table-column label="封面">
-          <template v-slot="scope">
-            <div style="display: flex; align-items: center">
-              <el-image
-                style="width: 50px"
-                v-if="scope.row.cover"
-                :src="scope.row.cover"
-                :preview-src-list="[scope.row.cover]"
-              ></el-image>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="title"
-          label="标题"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column label="内容">
-          <template v-slot="scope">
-            <el-button @click="showContent(scope.row.content)"
-              >查看内容</el-button
-            >
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="创建日期">
-          <template #default="scope">
-            {{
-              scope.row.createTime
-                ? moment(scope.row.createTime).format('YYYY-MM-DD')
-                : ''
-            }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="username" label="创建人"></el-table-column>
-        <el-table-column label="操作" width="180" align="center">
-          <template v-slot="scope">
-            <el-button
-              plain
-              type="primary"
-              @click="handleEdit(scope.row)"
-              size="mini"
-              >编辑</el-button
-            >
-            <el-button
-              plain
-              type="danger"
-              size="mini"
-              @click="del(scope.row.id)"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination">
-        <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          :current-page="pageNum"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, prev, pager, next"
-          :total="total"
-        ></el-pagination>
-      </div>
-    </div>
-
-    <div
-      style="margin-top: 10px"
-      v-else-if="tableData.length"
-      class="diary-card"
-    >
+    <div style="margin-top: 10px" class="diary-card">
       <el-row :gutter="10" style="margin-bottom: 10px">
         <el-col
           v-for="item in tableData"
@@ -295,9 +207,9 @@ onMounted(() => {
                   {{ item.title }}
                 </div>
                 <div class="card-time">
-                  <span><i class="el-icon-user"></i> {{ item.username }}</span>
+                  <!-- <span><i class="el-icon-user"></i> {{ item.username }}</span> -->
                   <span
-                    ><i class="el-icon-date"></i>
+                    ><el-icon><Calendar /></el-icon>
                     {{
                       item.createTime
                         ? moment(item.createTime).format('YYYY-MM-DD')
@@ -468,7 +380,7 @@ onMounted(() => {
 
       .card-title {
         font-size: 20px;
-        margin: 0 20px 0 0;
+        margin: 0 45px 0 0;
       }
 
       .card-time {

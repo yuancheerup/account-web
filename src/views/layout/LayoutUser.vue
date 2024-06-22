@@ -182,7 +182,7 @@ const logout = () => {
   }
 
   .content {
-    margin: 0 18% 0 18%;
+    margin: 0 17.5% 0 17.5%;
   }
 }
 </style>

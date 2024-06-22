@@ -94,27 +94,32 @@ const logout = () => {
             <span>系统首页</span>
           </el-menu-item>
 
-          <!-- <el-menu-item index="/statistic">
-            <el-icon><PieChart /></el-icon>
-            <span>账单统计</span>
+          <el-menu-item index="/notice">
+            <el-icon><Bell /></el-icon>
+            <span>公告信息</span>
           </el-menu-item>
 
-          <el-menu-item index="/bill">
+          <el-menu-item index="/account">
             <el-icon><Document /></el-icon>
-            <span>我的账单</span>
+            <span>账户信息</span>
           </el-menu-item>
 
-          <el-menu-item index="/plan">
+          <el-menu-item index="/category">
             <el-icon><Money /></el-icon>
-            <span>存钱计划</span>
+            <span>账单分类</span>
           </el-menu-item>
 
-          <el-menu-item index="/diary">
+          <el-menu-item index="/adminAccountBook">
             <el-icon><Notebook /></el-icon>
-            <span>记账日记</span>
-          </el-menu-item> -->
+            <span>账本管理</span>
+          </el-menu-item>
 
-          <el-sub-menu index="info">
+          <el-menu-item index="/adminDiary">
+            <el-icon><Tickets /></el-icon>
+            <span>记账日记</span>
+          </el-menu-item>
+
+          <!-- <el-sub-menu index="info">
             <template #title>
               <el-icon><Menu /></el-icon>
               <span>信息管理</span>
@@ -122,7 +127,7 @@ const logout = () => {
             <el-menu-item index="/account">账户信息</el-menu-item>
             <el-menu-item index="/category">账单分类</el-menu-item>
             <el-menu-item index="/notice">公告信息</el-menu-item>
-          </el-sub-menu>
+          </el-sub-menu> -->
 
           <el-sub-menu index="person">
             <template #title>

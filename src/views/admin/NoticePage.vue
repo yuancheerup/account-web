@@ -246,7 +246,7 @@ onMounted(() => {
 .table {
   background-color: #fff;
   margin-bottom: 7px;
-  padding: 10px;
+  padding: 18px;
   border-radius: 5px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
