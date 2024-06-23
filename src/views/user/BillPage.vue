@@ -10,6 +10,7 @@ const pageSize = ref(10)
 const total = ref(0)
 const type = ref(null)
 const category = ref(null)
+const name = ref(null)
 const start = ref(null)
 const end = ref(null)
 const fromVisible = ref(false)
@@ -85,7 +86,8 @@ const save = () => {
             wayType: form.wayType,
             money: form.money,
             remark: form.remark,
-            userId: user.id
+            userId: user.id,
+            bookId: form.bookId ? form.bookId : -1
           }
         }).then((res) => {
           if (res.data.code === 1) {
@@ -155,7 +157,8 @@ const load = (pageNumValue) => {
         category: category.value,
         userId: user.id,
         start: start.value,
-        end: end.value
+        end: end.value,
+        name: name.value
       }
     })
     .then((res) => {
@@ -173,6 +176,16 @@ const reset = () => {
   load(1)
 }
 
+// 获取所有账本名称
+const nameList = ref([])
+const getAllName = () => {
+  request.get('/accountBook/selectAll').then((res) => {
+    if (res.data.code === 1) {
+      nameList.value = res.data.data || []
+    }
+  })
+}
+
 const handleCurrentChange = (pageNumValue) => {
   load(pageNumValue)
 }
@@ -185,21 +198,23 @@ onMounted(() => {
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请选择账单类型查询" v-model="type"></el-input>
-      <el-input placeholder="请选择账单分类查询" v-model="category"></el-input>
+      <el-input placeholder="请输入账单类型查询" v-model="type"></el-input>
+      <el-input placeholder="请输入账单分类查询" v-model="category"></el-input>
+      <el-input placeholder="请输入账本名称查询" v-model="name"></el-input>
       <el-date-picker
         v-model="start"
         type="date"
         format="YYYY/MM/DD"
         value-format="YYYY-MM-DD"
-        placeholder="请选择开始日期查询"
-        style="margin-right: 10px"
+        placeholder="请选择开始日期"
+        style="margin-right: 10px; width: 167px"
       ></el-date-picker>
       <el-date-picker
         v-model="end"
         format="YYYY/MM/DD"
         value-format="YYYY-MM-DD"
-        placeholder="请选择结束日期查询"
+        placeholder="请选择结束日期"
+        style="width: 167px"
       ></el-date-picker>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)"
         >查询</el-button
@@ -230,12 +245,37 @@ onMounted(() => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="账单类型"></el-table-column>
-        <el-table-column prop="category" label="账单分类"></el-table-column>
-        <el-table-column prop="wayType" label="账户类型"></el-table-column>
-        <el-table-column prop="money" label="金额"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column prop="createTime" label="时间">
+        <el-table-column
+          prop="type"
+          label="账单类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          label="账单分类"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="wayType"
+          label="账户类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="money"
+          label="金额"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="name" label="账本名称" align="center">
+          <template #default="scope">
+            {{ scope.row.name ? scope.row.name : '无' }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="备注"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="createTime" label="时间" align="center">
           <template #default="scope">
             {{
               scope.row.createTime
@@ -244,7 +284,7 @@ onMounted(() => {
             }}
           </template>
         </el-table-column>
-        <el-table-column prop="username" label="用户"></el-table-column>
+        <!-- <el-table-column prop="username" label="用户"></el-table-column> -->
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button type="primary" plain @click="handleEdit(scope.row)"
@@ -320,6 +360,24 @@ onMounted(() => {
         <el-form-item label="金额" prop="money">
           <el-input v-model="form.money" placeholder="金额" :min="1"></el-input>
         </el-form-item>
+        <el-form-item label="账本" prop="name">
+          <el-select
+            v-model="form.name"
+            style="width: 100%"
+            placeholder="选择账本"
+            @click="getAllName"
+          >
+            <el-option
+              v-for="item in nameList"
+              :key="item.id"
+              :label="item.name"
+              @click="form.bookId = item.id"
+            >
+              {{ item.name }}
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="备注" prop="remark">
           <el-input
             type="textarea"
@@ -341,7 +399,7 @@ onMounted(() => {
 <style scoped>
 .search {
   .el-input {
-    width: 200px;
+    width: 167px;
     margin-right: 10px;
   }
 }

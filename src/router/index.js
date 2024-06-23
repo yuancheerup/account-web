@@ -334,6 +334,24 @@ const adminRoutes = [
         }
       },
       {
+        path: 'adminAccountBook',
+        name: 'adminAccountBook',
+        component: () => import('../views/admin/AdminAccountBook.vue'),
+        meta: {
+          name: '账本管理',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'adminDiary',
+        name: 'adminDiary',
+        component: () => import('../views/admin/AdminDiaryPage.vue'),
+        meta: {
+          name: '记账日记',
+          requiresAuth: true
+        }
+      },
+      {
         path: 'user',
         name: 'user',
         component: () => import('../views/admin/UserPage.vue'),
