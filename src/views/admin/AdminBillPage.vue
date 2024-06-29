@@ -49,13 +49,13 @@ const getCategoryList = () => {
 }
 
 // 点击添加
-const handleAdd = () => {
-  // 清空form中的数据
-  Object.keys(form).forEach((key) => {
-    form[key] = ''
-  })
-  fromVisible.value = true
-}
+// const handleAdd = () => {
+//   // 清空form中的数据
+//   Object.keys(form).forEach((key) => {
+//     form[key] = ''
+//   })
+//   fromVisible.value = true
+// }
 
 // 点击编辑
 const handleEdit = (row) => {
@@ -222,12 +222,13 @@ onMounted(() => {
       <el-button type="warning" plain style="margin-left: 10px" @click="reset"
         >重置</el-button
       >
-    </div>
-
-    <div class="operation">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
+
+    <!-- <div class="operation">
+      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    </div> -->
 
     <div class="table">
       <el-table
@@ -270,6 +271,11 @@ onMounted(() => {
             {{ scope.row.name ? scope.row.name : '无' }}
           </template>
         </el-table-column>
+        <el-table-column
+          prop="username"
+          label="创建人"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="remark"
           label="备注"
@@ -346,16 +352,16 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="账户类型" prop="wayType">
-          <el-radio-group
+          <el-select
             v-model="form.wayType"
             style="width: 100%"
             placeholder="账户"
           >
-            <el-radio value="支付宝">支付宝</el-radio>
-            <el-radio value="微信支付">微信支付</el-radio>
-            <el-radio value="银行卡">银行卡</el-radio>
-            <el-radio value="现金">现金</el-radio>
-          </el-radio-group>
+            <el-option value="支付宝"></el-option>
+            <el-option value="微信支付"></el-option>
+            <el-option value="银行卡"></el-option>
+            <el-option value="现金"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="金额" prop="money">
           <el-input v-model="form.money" placeholder="金额" :min="1"></el-input>

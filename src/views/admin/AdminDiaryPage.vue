@@ -53,11 +53,11 @@ const showContent = (contentText) => {
   contentVisible.value = true
 }
 
-const handleAdd = () => {
-  Object.keys(form).forEach((key) => delete form[key])
-  setText()
-  fromVisible.value = true
-}
+// const handleAdd = () => {
+//   Object.keys(form).forEach((key) => delete form[key])
+//   setText()
+//   fromVisible.value = true
+// }
 
 const handleEdit = (row) => {
   Object.assign(form, JSON.parse(JSON.stringify(row)))
@@ -208,12 +208,13 @@ onMounted(() => {
       <el-button type="warning" plain style="margin-left: 10px" @click="reset"
         >重置</el-button
       >
-    </div>
-
-    <div class="operation">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
+
+    <!-- <div class="operation">
+      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    </div> -->
 
     <div class="table">
       <el-table
@@ -231,7 +232,25 @@ onMounted(() => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="封面">
+        <el-table-column label="封面" align="center">
+          <template v-slot="scope">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <el-image
+                style="width: 50px"
+                v-if="scope.row.cover"
+                :src="scope.row.cover"
+                :preview-src-list="[scope.row.cover]"
+              ></el-image>
+            </div>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="封面" align="center">
           <template v-slot="scope">
             <div style="display: flex; align-items: center">
               <el-image
@@ -242,11 +261,12 @@ onMounted(() => {
               ></el-image>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="title"
           label="标题"
           show-overflow-tooltip
+          align="center"
         ></el-table-column>
         <el-table-column label="内容">
           <template v-slot="scope">

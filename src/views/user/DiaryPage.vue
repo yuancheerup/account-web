@@ -117,9 +117,9 @@ const del = (id) => {
     .catch(() => {})
 }
 
-const handleSelectionChange = (rows) => {
-  ids.value = rows.map((v) => v.id)
-}
+// const handleSelectionChange = (rows) => {
+//   ids.value = rows.map((v) => v.id)
+// }
 
 // 分页
 const load = (pageNumParam) => {
@@ -175,6 +175,13 @@ onMounted(() => {
 <template>
   <div>
     <div class="search">
+      <el-button
+        type="primary"
+        plain
+        @click="handleAdd"
+        style="margin-right: 18px"
+        >新增</el-button
+      >
       <el-input
         placeholder="请输入标题查询"
         style="width: 200px"
@@ -188,9 +195,9 @@ onMounted(() => {
       >
     </div>
 
-    <div class="operation">
+    <!-- <div class="operation">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
-    </div>
+    </div> -->
 
     <div style="margin-top: 10px" class="diary-card">
       <el-row :gutter="10" style="margin-bottom: 10px">

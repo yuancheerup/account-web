@@ -220,6 +220,14 @@ onMounted(() => {
 <template>
   <div>
     <div class="search">
+      <el-button
+        type="primary"
+        plain
+        @click="handleAdd"
+        style="margin-right: 18px"
+        >新增</el-button
+      >
+
       <el-input
         placeholder="请输入标题查询"
         style="width: 200px"
@@ -233,9 +241,9 @@ onMounted(() => {
       >
     </div>
 
-    <div class="operation">
+    <!-- <div class="operation">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
-    </div>
+    </div> -->
 
     <div style="margin-top: 10px" class="book-card">
       <el-row :gutter="10" style="margin-bottom: 10px">
@@ -378,12 +386,32 @@ onMounted(() => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="账单类型"></el-table-column>
-        <el-table-column prop="category" label="账单分类"></el-table-column>
-        <el-table-column prop="wayType" label="账户类型"></el-table-column>
-        <el-table-column prop="money" label="金额"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column prop="createTime" label="时间">
+        <el-table-column
+          prop="type"
+          label="账单类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          label="账单分类"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="wayType"
+          label="账户类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="money"
+          label="金额"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="remark"
+          label="备注"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="createTime" label="时间" align="center">
           <template #default="scope">
             {{
               scope.row.createTime

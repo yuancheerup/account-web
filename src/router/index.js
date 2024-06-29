@@ -325,6 +325,15 @@ const adminRoutes = [
         }
       },
       {
+        path: 'adminBill',
+        name: 'adminBill',
+        component: () => import('../views/admin/AdminBillPage.vue'),
+        meta: {
+          name: '账单管理',
+          requiresAuth: true
+        }
+      },
+      {
         path: 'notice',
         name: 'notice',
         component: () => import('../views/admin/NoticePage.vue'),
@@ -339,6 +348,15 @@ const adminRoutes = [
         component: () => import('../views/admin/AdminAccountBook.vue'),
         meta: {
           name: '账本管理',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'adminPlan',
+        name: 'adminPlan',
+        component: () => import('../views/admin/AdminPlanPage.vue'),
+        meta: {
+          name: '存钱计划',
           requiresAuth: true
         }
       },

@@ -42,13 +42,13 @@ const showContent = (id) => {
 }
 
 // 添加账本
-const handleAdd = () => {
-  form.id = null
-  form.name = ''
-  form.cover = ''
-  form.remark = ''
-  fromVisible.value = true
-}
+// const handleAdd = () => {
+//   form.id = null
+//   form.name = ''
+//   form.cover = ''
+//   form.remark = ''
+//   fromVisible.value = true
+// }
 
 // 点击编辑按钮
 const handleEdit = (row) => {
@@ -259,12 +259,13 @@ onMounted(() => {
       <el-button type="warning" plain style="margin-left: 10px" @click="reset"
         >重置</el-button
       >
-    </div>
-
-    <div class="operation">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
+
+    <!-- <div class="operation">
+      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    </div> -->
 
     <div class="table">
       <el-table
@@ -427,12 +428,32 @@ onMounted(() => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="账单类型"></el-table-column>
-        <el-table-column prop="category" label="账单分类"></el-table-column>
-        <el-table-column prop="wayType" label="账户类型"></el-table-column>
-        <el-table-column prop="money" label="金额"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column prop="createTime" label="时间">
+        <el-table-column
+          prop="type"
+          label="账单类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          label="账单分类"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="wayType"
+          label="账户类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="money"
+          label="金额"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="remark"
+          label="备注"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="createTime" label="时间" align="center">
           <template #default="scope">
             {{
               scope.row.createTime

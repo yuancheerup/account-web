@@ -32,9 +32,10 @@ const load = async (pageNumValue) => {
   if (pageNumValue) pageNum.value = pageNumValue
   const { data } = await request.get('/plan/selectPage', {
     params: {
+      name: name.value,
+      userId: user.userId,
       pageNum: pageNum.value,
-      pageSize: pageSize.value,
-      name: name.value
+      pageSize: pageSize.value
     }
   })
   tableData.value = data.data?.list
@@ -128,6 +129,13 @@ const handleCurrentChange = (page) => {
 <template>
   <div>
     <div class="search">
+      <el-button
+        type="primary"
+        plain
+        @click="handleAdd"
+        style="margin-right: 18px"
+        >新增</el-button
+      >
       <el-input
         placeholder="请输入标题查询"
         style="width: 200px"
@@ -141,9 +149,9 @@ const handleCurrentChange = (page) => {
       >
     </div>
 
-    <div class="operation">
+    <!-- <div class="operation">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
-    </div>
+    </div> -->
 
     <div style="margin-top: 10px" v-if="tableData.length">
       <div>

@@ -170,8 +170,16 @@ onMounted(() => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="分类名称"></el-table-column>
-        <el-table-column prop="type" label="类型"></el-table-column>
+        <el-table-column
+          prop="name"
+          label="分类名称"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="type"
+          label="类型"
+          align="center"
+        ></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button type="primary" plain @click="handleEdit(scope.row)"

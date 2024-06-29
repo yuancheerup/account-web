@@ -109,7 +109,7 @@ const register = () => {
 .container {
   height: 100vh;
   overflow: hidden;
-  background-image: url('@/assets/img/bg1.jpg');
+  background-image: url('@/assets/img/bg-login-user.png');
   background-size: 100%;
   display: flex;
   align-items: center;
@@ -120,7 +120,7 @@ const register = () => {
 .login-box {
   width: 300px;
   padding: 30px;
-  background-color: rgb(251, 251, 251, 0.9);
+  background-color: #fff;
   border-radius: 5px;
   .title {
     text-align: center;

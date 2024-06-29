@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -100,18 +99,28 @@ const logout = () => {
           </el-menu-item>
 
           <el-menu-item index="/account">
-            <el-icon><Document /></el-icon>
+            <el-icon><Postcard /></el-icon>
             <span>账户信息</span>
           </el-menu-item>
 
           <el-menu-item index="/category">
-            <el-icon><Money /></el-icon>
+            <el-icon><Grid /></el-icon>
             <span>账单分类</span>
+          </el-menu-item>
+
+          <el-menu-item index="/adminBill">
+            <el-icon><Document /></el-icon>
+            <span>账单管理</span>
           </el-menu-item>
 
           <el-menu-item index="/adminAccountBook">
             <el-icon><Notebook /></el-icon>
             <span>账本管理</span>
+          </el-menu-item>
+
+          <el-menu-item index="/adminPlan">
+            <el-icon><Money /></el-icon>
+            <span>存钱计划</span>
           </el-menu-item>
 
           <el-menu-item index="/adminDiary">

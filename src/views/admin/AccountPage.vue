@@ -28,7 +28,7 @@ const load = (pageNumValue = 1) => {
     params: {
       pageNum: pageNum.value,
       pageSize: pageSize.value,
-      name: name.value
+      username: name.value
     }
   }).then((res) => {
     tableData.value = res.data.data?.list || []
@@ -37,11 +37,11 @@ const load = (pageNumValue = 1) => {
 }
 
 // 点击添加
-const handleAdd = () => {
-  form.name = ''
-  form.type = ''
-  formVisible.value = true
-}
+// const handleAdd = () => {
+//   form.name = ''
+//   form.type = ''
+//   formVisible.value = true
+// }
 
 // 点击编辑
 const handleEdit = (row) => {
@@ -147,12 +147,13 @@ onMounted(() => {
       <el-button type="warning" plain style="margin-left: 10px" @click="reset"
         >重置</el-button
       >
-    </div>
-
-    <div class="operation">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
+
+    <!-- <div class="operation">
+      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    </div> -->
 
     <div class="table">
       <el-table
