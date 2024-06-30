@@ -1,19 +1,10 @@
 <script setup>
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const user = JSON.parse(localStorage.getItem('big-user') || '{}')
-// const user = ref({
-//   name: '管理员',
-//   avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-// })
-
-const updateUser = () => {
-  user.value.username = '张三'
-  user.value.avatar =
-    'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-}
+const user = reactive(JSON.parse(localStorage.getItem('big-user') || '{}'))
 
 const goToPerson = () => {
   if (user.role === 'ADMIN') {
@@ -28,6 +19,11 @@ const goToPassword = () => {
 const logout = () => {
   localStorage.removeItem('big-user')
   router.push('/login')
+}
+
+// 监听子组件触发的事件
+const handleUserUpdate = (updatedUser) => {
+  Object.assign(user, updatedUser)
 }
 </script>
 <template>
@@ -128,16 +124,6 @@ const logout = () => {
             <span>记账日记</span>
           </el-menu-item>
 
-          <!-- <el-sub-menu index="info">
-            <template #title>
-              <el-icon><Menu /></el-icon>
-              <span>信息管理</span>
-            </template>
-            <el-menu-item index="/account">账户信息</el-menu-item>
-            <el-menu-item index="/category">账单分类</el-menu-item>
-            <el-menu-item index="/notice">公告信息</el-menu-item>
-          </el-sub-menu> -->
-
           <el-sub-menu index="person">
             <template #title>
               <el-icon><UserFilled /></el-icon>
@@ -151,7 +137,7 @@ const logout = () => {
 
       <!--  数据表格  -->
       <div class="layout-main-right">
-        <router-view @update:user="updateUser" />
+        <router-view @update:user="handleUserUpdate" />
         <!-- <router-view /> -->
       </div>
     </div>

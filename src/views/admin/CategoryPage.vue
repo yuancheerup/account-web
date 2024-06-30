@@ -8,6 +8,7 @@ const pageNum = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 const name = ref(null)
+const type = ref(null)
 const formVisible = ref(false)
 const form = reactive({})
 const ids = ref([])
@@ -28,7 +29,8 @@ const load = (pageNumValue = 1) => {
     params: {
       pageNum: pageNum.value,
       pageSize: pageSize.value,
-      name: name.value
+      name: name.value,
+      type: type.value
     }
   }).then((res) => {
     tableData.value = res.data.data?.list || []
@@ -121,11 +123,17 @@ const delBatch = () => {
 
 const reset = () => {
   name.value = null
+  type.value = null
   load(1)
 }
 
 const handleCurrentChange = (pageNumValue) => {
   load(pageNumValue)
+}
+
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
 }
 
 onMounted(() => {
@@ -138,8 +146,13 @@ onMounted(() => {
     <div class="search">
       <el-input
         placeholder="请输入名称查询"
-        style="width: 200px"
+        style="width: 200px; margin-right: 10px"
         v-model="name"
+      ></el-input>
+      <el-input
+        placeholder="请输入账单类型查询"
+        v-model="type"
+        style="width: 200px"
       ></el-input>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)"
         >查询</el-button
@@ -196,10 +209,11 @@ onMounted(() => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         >
         </el-pagination>

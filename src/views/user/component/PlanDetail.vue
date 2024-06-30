@@ -130,7 +130,7 @@ onMounted(() => {
             padding-right: 50px;
           "
         >
-          <i class="el-icon-date"></i> {{ plan.end }}
+          <el-icon><Calendar /></el-icon>{{ plan.start }} —— {{ plan.end }}
         </div>
       </div>
       <div style="margin-bottom: 10px">

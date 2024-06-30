@@ -171,6 +171,7 @@ const load = (pageNumValue) => {
 const reset = () => {
   type.value = null
   category.value = null
+  name.value = null
   start.value = null
   end.value = null
   load(1)
@@ -179,11 +180,15 @@ const reset = () => {
 // 获取所有账本名称
 const nameList = ref([])
 const getAllName = () => {
-  request.get('/accountBook/selectAll').then((res) => {
-    if (res.data.code === 1) {
-      nameList.value = res.data.data || []
-    }
-  })
+  request
+    .get('/accountBook/selectAll', {
+      params: { userId: user.id }
+    })
+    .then((res) => {
+      if (res.data.code === 1) {
+        nameList.value = res.data.data || []
+      }
+    })
 }
 
 const handleCurrentChange = (pageNumValue) => {
@@ -371,10 +376,9 @@ onMounted(() => {
               v-for="item in nameList"
               :key="item.id"
               :label="item.name"
+              :value="item.name"
               @click="form.bookId = item.id"
-            >
-              {{ item.name }}
-            </el-option>
+            ></el-option>
           </el-select>
         </el-form-item>
 

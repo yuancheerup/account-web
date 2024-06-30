@@ -44,11 +44,11 @@ const load = (pageNumValue = 1) => {
 // }
 
 // 点击编辑
-const handleEdit = (row) => {
-  form.name = row.name
-  form.type = row.type
-  formVisible.value = true
-}
+// const handleEdit = (row) => {
+//   form.name = row.name
+//   form.type = row.type
+//   formVisible.value = true
+// }
 
 // 保存
 const save = () => {
@@ -128,6 +128,11 @@ const handleCurrentChange = (pageNumValue) => {
   load(pageNumValue)
 }
 
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
+}
+
 onMounted(() => {
   load(1)
 })
@@ -177,9 +182,9 @@ onMounted(() => {
         <el-table-column prop="pay" label="支出"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
-            <el-button type="primary" plain @click="handleEdit(scope.row)"
+            <!-- <el-button type="primary" plain @click="handleEdit(scope.row)"
               >编辑</el-button
-            >
+            > -->
             <el-button type="danger" plain @click="del(scope.row.id)"
               >删除</el-button
             >
@@ -191,10 +196,11 @@ onMounted(() => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         >
         </el-pagination>

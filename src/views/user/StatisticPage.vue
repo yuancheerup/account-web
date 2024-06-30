@@ -101,7 +101,7 @@ const fetchPayData = async () => {
     const res = await request.get(`/bill/count`, {
       params: { type: '支出' }
     })
-    console.log('fetchPayData------', res)
+    console.log('fetchPayData------', res.data)
 
     payList.value = res.data.data || []
     const arr = payList.value.map((item) => ({

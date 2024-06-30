@@ -4,20 +4,17 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const user = JSON.parse(localStorage.getItem('big-user') || '{}')
-// const user = ref({
-//   name: '管理员',
-//   avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-// })
+// 将 user 定义为响应式对象
+const user = ref(JSON.parse(localStorage.getItem('big-user') || '{}'))
 
-const updateUser = () => {
-  user.value.username = '张三'
-  user.value.avatar =
-    'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-}
+// const updateUser = () => {
+//   user.value.username = ''
+//   user.value.avatar =
+//     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+// }
 
 const goToPerson = () => {
-  if (user.role === 'ADMIN') {
+  if (user.value.role === 'ADMIN') {
     router.push('/adminPerson')
   } else {
     router.push('/userPerson')
@@ -31,6 +28,7 @@ const logout = () => {
   router.push('/login')
 }
 </script>
+
 <template>
   <div class="layout-container">
     <!--  头部  -->
@@ -55,13 +53,8 @@ const logout = () => {
         </div>
         <el-dropdown>
           <div class="avatar">
-            <img
-              :src="
-                user.avatar ||
-                'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-              "
-            />
-            <div>{{ user.username || '管理员' }}</div>
+            <img :src="user.value.avatar" />
+            <div>{{ user.value.username || '管理员' }}</div>
           </div>
 
           <template #dropdown>
@@ -139,8 +132,8 @@ const logout = () => {
 
       <!--  数据表格  -->
       <div class="layout-main-right">
-        <router-view @update:user="updateUser" />
-        <!-- <router-view /> -->
+        <!-- <router-view @update:user="updateUser" /> -->
+        <router-view />
       </div>
     </div>
   </div>

@@ -240,6 +240,11 @@ const handleCoverSuccess = (res) => {
   form.cover = res.data
 }
 
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
+}
+
 onMounted(() => {
   load(1)
 })
@@ -355,10 +360,11 @@ onMounted(() => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         ></el-pagination>
       </div>
@@ -518,16 +524,16 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="账户类型" prop="wayType">
-          <el-select
+          <el-radio-group
             v-model="form.wayType"
             style="width: 100%"
             placeholder="账户"
           >
-            <el-option value="支付宝"></el-option>
-            <el-option value="微信支付"></el-option>
-            <el-option value="银行卡"></el-option>
-            <el-option value="现金"></el-option>
-          </el-select>
+            <el-radio value="支付宝">支付宝</el-radio>
+            <el-radio value="微信支付">微信支付</el-radio>
+            <el-radio value="银行卡">银行卡</el-radio>
+            <el-radio value="现金">现金</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="金额" prop="money">
           <el-input v-model="form.money" placeholder="金额" :min="1"></el-input>

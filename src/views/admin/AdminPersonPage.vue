@@ -19,7 +19,7 @@ const update = () => {
       localStorage.setItem('big-user', JSON.stringify(user))
 
       // 触发父级的数据更新
-      emit('update:user')
+      emit('update:user', user)
     } else {
       ElMessage.error(res.data.msg)
     }

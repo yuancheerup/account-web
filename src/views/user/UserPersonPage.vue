@@ -19,7 +19,7 @@ const update = () => {
       localStorage.setItem('big-user', JSON.stringify(user))
 
       // 触发父级的数据更新
-      emit('update:user')
+      emit('update:user', user)
     } else {
       ElMessage.error(res.data.msg)
     }
@@ -67,8 +67,8 @@ const handleAvatarSuccess = (response) => {
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="user.sex">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
+            <el-radio value="男">男</el-radio>
+            <el-radio value="女">女</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="生日" prop="birthday">

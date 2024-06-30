@@ -1,19 +1,10 @@
 <script setup>
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const user = JSON.parse(localStorage.getItem('big-user') || '{}')
-// const user = ref({
-//   name: '管理员',
-//   avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-// })
-
-const updateUser = () => {
-  user.value.username = '张三'
-  user.value.avatar =
-    'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-}
+const user = reactive(JSON.parse(localStorage.getItem('big-user') || '{}'))
 
 const goToPerson = () => {
   if (user.role === 'ADMIN') {
@@ -28,6 +19,11 @@ const goToPassword = () => {
 const logout = () => {
   localStorage.removeItem('big-user')
   router.push('/login')
+}
+
+// 监听子组件触发的事件
+const handleUserUpdate = (updatedUser) => {
+  Object.assign(user, updatedUser)
 }
 </script>
 <template>
@@ -91,7 +87,7 @@ const logout = () => {
           </div>
           <el-dropdown>
             <div class="avatar">
-              <img :src="user.avatar" />
+              <img :src="user.avatar" alt="" />
               <div>{{ user.username || '用户' }}</div>
             </div>
 
@@ -113,7 +109,8 @@ const logout = () => {
 
     <!-- 主体内容 -->
     <div class="content">
-      <router-view @update:user="updateUser" />
+      <router-view @update:user="handleUserUpdate" />
+      <!-- <router-view /> -->
     </div>
   </div>
 </template>

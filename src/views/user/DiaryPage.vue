@@ -20,7 +20,7 @@ const user = JSON.parse(localStorage.getItem('big-user') || '{}')
 const rules = {
   title: [{ required: true, message: '请输入标题', trigger: 'blur' }]
 }
-const ids = ref([])
+
 const contentVisible = ref(false)
 const content = ref('')
 
@@ -53,12 +53,18 @@ const showContent = (contentText) => {
   contentVisible.value = true
 }
 
+// 添加
 const handleAdd = () => {
-  Object.keys(form).forEach((key) => delete form[key])
-  setText()
+  Object.keys(form).forEach((key) => {
+    form[key] = ''
+  })
+  setTimeout(() => {
+    editorRef.value.setHtml('')
+  }, 100) // 重置编辑器内容
   fromVisible.value = true
 }
 
+// 编辑
 const handleEdit = (row) => {
   Object.assign(form, JSON.parse(JSON.stringify(row)))
 
@@ -129,12 +135,13 @@ const load = (pageNumParam) => {
       params: {
         pageNum: pageNum.value,
         pageSize: pageSize.value,
-        title: title.value
+        title: title.value,
+        userId: user.id
       }
     })
     .then((res) => {
       tableData.value = res.data.data?.list || []
-      total.value = res.data.data?.total || []
+      total.value = res.data.data?.total || 0
     })
 }
 
@@ -183,7 +190,7 @@ onMounted(() => {
         >新增</el-button
       >
       <el-input
-        placeholder="请输入标题查询"
+        placeholder="请输入日记名称查询"
         style="width: 200px"
         v-model="title"
       ></el-input>

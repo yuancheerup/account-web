@@ -33,7 +33,7 @@ const load = async (pageNumValue) => {
   const { data } = await request.get('/plan/selectPage', {
     params: {
       name: name.value,
-      userId: user.userId,
+      userId: user.id,
       pageNum: pageNum.value,
       pageSize: pageSize.value
     }
@@ -50,7 +50,9 @@ const reset = () => {
 
 // 点击添加
 const handleAdd = () => {
-  Object.assign(form, {})
+  Object.keys(form).forEach((key) => {
+    form[key] = null
+  })
   fromVisible.value = true
 }
 
@@ -67,6 +69,7 @@ const save = async () => {
     url: form.id ? '/plan/update' : '/plan/add',
     method: form.id ? 'PUT' : 'POST',
     data: {
+      id: form.id,
       name: form.name,
       cover: form.cover,
       money: form.money,
@@ -93,6 +96,19 @@ const del = async (id) => {
     load(1)
   } else {
     ElMessage.error(response.data.msg)
+  }
+}
+
+const pushToPlanDetail = (planId, status) => {
+  console.log('pushToPlanDetail:::', status)
+  if (status === '进行中') {
+    router.push('/planDetail?planId=' + planId)
+  } else if (status === '已完成') {
+    ElMessage.error('该计划已完成，无法添加计划详情')
+  } else if (status === '未开始') {
+    ElMessage.error('该计划未开始，无法添加计划详情')
+  } else if (status === '已结束') {
+    ElMessage.error('该计划已结束，无法添加计划详情')
   }
 }
 
@@ -137,7 +153,7 @@ const handleCurrentChange = (page) => {
         >新增</el-button
       >
       <el-input
-        placeholder="请输入标题查询"
+        placeholder="请输入计划名称查询"
         style="width: 200px"
         v-model="name"
       ></el-input>
@@ -165,7 +181,7 @@ const handleCurrentChange = (page) => {
             <div
               style="display: flex; align-items: center; cursor: pointer"
               class="card"
-              @click="router.push('/planDetail?planId=' + item.id)"
+              @click="pushToPlanDetail(item.id, item.status)"
             >
               <img :src="item.cover" alt="" style="width: 80px; height: 80px" />
               <div style="flex: 1; margin-left: 15px">

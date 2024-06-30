@@ -2,6 +2,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import request from '@/utils/request'
+import moment from 'moment'
 
 const tableData = ref([])
 const pageNum = ref(1)
@@ -123,6 +124,11 @@ const handleCurrentChange = (pageNumValue) => {
   load(pageNumValue)
 }
 
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  load(1)
+}
+
 // DOM渲染之后执行
 onMounted(() => {
   load(1)
@@ -170,14 +176,28 @@ onMounted(() => {
           prop="title"
           label="标题"
           show-overflow-tooltip
+          align="center"
         ></el-table-column>
         <el-table-column
           prop="content"
           label="内容"
           show-overflow-tooltip
+          align="center"
         ></el-table-column>
-        <el-table-column prop="time" label="创建时间"></el-table-column>
-        <el-table-column prop="user" label="创建人"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" align="center">
+          <template #default="scope">
+            {{
+              scope.row.createTime
+                ? moment(scope.row.createTime).format('YYYY-MM-DD')
+                : ''
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="createUser"
+          label="创建人"
+          align="center"
+        ></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)"
@@ -194,10 +214,11 @@ onMounted(() => {
         <el-pagination
           background
           @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
           :page-size="pageSize"
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         >
         </el-pagination>

@@ -208,15 +208,31 @@ const handleAvatarSuccess = (response) => {
             {{ (pageNum - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="username" label="账号"></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="phone" label="电话"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column
+          prop="username"
+          label="账号"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="name"
+          label="姓名"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="phone"
+          label="电话"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="email"
+          label="邮箱"
+          align="center"
+        ></el-table-column>
         <!-- <el-table-column prop="sex" label="性别"></el-table-column>
         <el-table-column prop="birthday" label="生日"></el-table-column> -->
-        <el-table-column label="头像">
+        <el-table-column label="头像" align="center">
           <template #default="scope">
-            <div style="display: flex; align-items: center">
+            <div>
               <el-image
                 style="width: 40px; height: 40px; border-radius: 50%"
                 v-if="scope.row.avatar"
@@ -283,21 +299,7 @@ const handleAvatarSuccess = (response) => {
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="邮箱"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="性别" prop="sex">
-          <el-radio-group v-model="form.sex">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="生日" prop="birthady">
-          <el-date-picker
-            style="width: 100%"
-            placeholder="选择日期"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            v-model="form.birthday"
-          ></el-date-picker>
-        </el-form-item> -->
+
         <el-form-item label="头像">
           <el-upload
             class="avatar-uploader"

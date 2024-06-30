@@ -108,7 +108,8 @@ const load = (pageNumParam) => {
       params: {
         pageNum: pageNum.value,
         pageSize: pageSize.value,
-        name: name.value
+        name: name.value,
+        userId: user.id
       }
     })
     .then((res) => {
@@ -229,7 +230,7 @@ onMounted(() => {
       >
 
       <el-input
-        placeholder="请输入标题查询"
+        placeholder="请输入账本名称"
         style="width: 200px"
         v-model="name"
       ></el-input>

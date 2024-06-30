@@ -93,7 +93,11 @@ const register = () => {
         </el-form-item>
 
         <el-form-item>
-          <el-button @click="register">注册</el-button>
+          <el-button
+            @click="register"
+            style="background-color: #409eff; border: 0"
+            >注册</el-button
+          >
         </el-form-item>
 
         <div style="display: flex; align-items: center">
@@ -115,6 +119,7 @@ const register = () => {
   align-items: center;
   justify-content: center;
   color: #666;
+  background-color: #b8e5f8;
 }
 
 .login-box {
